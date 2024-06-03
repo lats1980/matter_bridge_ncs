@@ -30,12 +30,6 @@
       "path": "../../../../modules/lib/matter/src/app/zap-templates/app-templates.json",
       "type": "gen-templates-json",
       "version": "chip-v1"
-    },
-    {
-      "pathRelativity": "relativeToZap",
-      "path": "../../../../../matter/connectedhomeip/src/app/zap-templates/app-templates.json",
-      "type": "gen-templates-json",
-      "version": "chip-v1"
     }
   ],
   "endpointTypes": [
@@ -4598,7 +4592,7 @@
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
-              "defaultValue": "2",
+              "defaultValue": "14",
               "reportable": 1,
               "minInterval": 1,
               "maxInterval": 65534,

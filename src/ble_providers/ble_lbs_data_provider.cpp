@@ -259,10 +259,16 @@ void BleLBSDataProvider::NotifyOnOffAttributeChange(intptr_t context)
 #ifdef CONFIG_BRIDGE_GENERIC_SWITCH_BRIDGED_DEVICE
 void BleLBSDataProvider::NotifySwitchCurrentPositionAttributeChange(intptr_t context)
 {
+	static bool state;
 	BleLBSDataProvider *provider = reinterpret_cast<BleLBSDataProvider *>(context);
 
-	provider->NotifyUpdateState(Clusters::Switch::Id, Clusters::Switch::Attributes::CurrentPosition::Id,
-				    &provider->mCurrentSwitchPosition, sizeof(provider->mCurrentSwitchPosition));
+
+	printk("mCurrentSwitchPosition: %d\n", provider->mCurrentSwitchPosition);
+	if (provider->mCurrentSwitchPosition == 1) {
+		state = !state;
+		provider->NotifyUpdateState(Clusters::Switch::Id, Clusters::Switch::Attributes::CurrentPosition::Id,
+						&state, sizeof(state));
+	}
 }
 #endif
 

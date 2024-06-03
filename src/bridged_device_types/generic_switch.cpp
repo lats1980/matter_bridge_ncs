@@ -113,11 +113,24 @@ CHIP_ERROR GenericSwitchDevice::HandleAttributeChange(chip::ClusterId clusterId,
 		case Clusters::Switch::Attributes::CurrentPosition::Id: {
 			err = CopyAttribute(data, dataSize, &mCurrentPosition, sizeof(mCurrentPosition));
 			VerifyOrReturnError(err == CHIP_NO_ERROR, err);
-
+printk("CP:%d\n", mCurrentPosition);
 			/* The device supports only two positions, so non-zero means the switch was pressed. */
 			if (mCurrentPosition) {
-				Clusters::Switch::Attributes::CurrentPosition::Set(mEndpointId, mCurrentPosition);
-				Clusters::SwitchServer::Instance().OnInitialPress(mEndpointId, mCurrentPosition);
+				//Clusters::Switch::Attributes::CurrentPosition::Set(mEndpointId, mCurrentPosition);
+				//Clusters::SwitchServer::Instance().OnInitialPress(mEndpointId, mCurrentPosition);
+				DeviceLayer::SystemLayer().ScheduleLambda([this] {
+				Clusters::Switch::Attributes::CurrentPosition::Set(mEndpointId, 1);
+				Clusters::SwitchServer::Instance().OnInitialPress(mEndpointId, 1);
+				Clusters::Switch::Attributes::CurrentPosition::Set(mEndpointId, 0);
+				Clusters::SwitchServer::Instance().OnShortRelease(mEndpointId, 0);
+				});
+			} else {
+				DeviceLayer::SystemLayer().ScheduleLambda([this] {
+				Clusters::Switch::Attributes::CurrentPosition::Set(mEndpointId, 1);
+				Clusters::SwitchServer::Instance().OnLongPress(mEndpointId, 1);
+				Clusters::Switch::Attributes::CurrentPosition::Set(mEndpointId, 0);
+				Clusters::SwitchServer::Instance().OnLongRelease(mEndpointId, 0);
+				});
 			}
 
 			break;

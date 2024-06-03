@@ -30,7 +30,7 @@ private:
 
 	static constexpr uint16_t GetSwitchClusterRevision() { return 1; }
 	/* According to the Matter 1.2 specification: Bit 1 -> MomentarySwitch in the Switch Cluster section. */
-	static constexpr uint32_t GetSwitchClusterFeatureMap() { return 2; }
+	static constexpr uint32_t GetSwitchClusterFeatureMap() { return 14; }
 	static constexpr uint32_t GetSwitchClusterNumberOfPositions() { return 2; }
 
 	uint8_t mCurrentPosition{};
